@@ -1,0 +1,17 @@
+{
+  "name": "vendor_name/php_batch_3_day_15",
+  "type": "project",
+  "description": "description",
+  "keywords": [],
+  "require": {
+    
+  },
+  "require-dev": {
+
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app//"
+    }
+  }
+}
