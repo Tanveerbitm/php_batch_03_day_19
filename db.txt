@@ -1,1 +1,1 @@
-$$
+@5@,TSH101,T-Shirt,15,3,assets/img/upload/sh.jpg$@13@,W101,Smart Watch,120,7,assets/img/upload/w.png$@9@,M101,Nokia,25,102,assets/img/upload/m1.jpg$@10@,SH101,Sniker,50,25,assets/img/upload/shoes.jpg$@11@,SK101,Skirt,250,6,assets/img/upload/skrt.jpg$

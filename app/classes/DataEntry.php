@@ -6,9 +6,7 @@ namespace App\classes;
 
 class DataEntry
 {
-    protected $title;
-    protected $authorName;
-    protected $description;
+
     protected $image;
     protected $imageName;
     protected $directory;
@@ -26,48 +24,63 @@ class DataEntry
     protected $text;
     protected $content;
     protected $finalText;
+    protected $i = 1;
+    protected $first = '';
+    protected $second = '';
+    protected $rest;
+    protected $strArray;
+    protected $code;
+    protected $productName;
+    protected $price;
+    protected $quantity;
+    protected $showEditData;
+    protected $trimData;
+    protected $givenImage;
+    protected $filterData;
 
 
-    public function __construct($post=null)
+    public function __construct($post = null)
     {
-        if($post){
-            $this->title=$post['title'];
-            $this->authorName=$post['author_name'];
-            $this->description=$post['description'];
+        if ($post) {
+            $this->code = $post['code'];
+            $this->productName = $post['name'];
+            $this->price = $post['price'];
+            $this->quantity = $post['quantity'];
         }
 
     }
-
-    public function index(){
-        if($this->title && $this->authorName && $this->description){
+    public function index()
+    {
+        if ($this->code && $this->productName && $this->quantity && $this->price) {
             $this->image = $this->imageUpload();
             $this->fileName = 'db.txt';
-            $this->file=fopen($this->fileName,'a');
+            $this->file = fopen($this->fileName, 'a');
 
             $this->id = $this->getId();
-            $this->data = "@$this->id@,$this->title,$this->authorName,$this->description,$this->image$";
-            fwrite($this->file,$this->data);
+            $this->data = "@$this->id@,$this->code,$this->productName,$this->price,$this->quantity,$this->image$";
+            fwrite($this->file, $this->data);
             fclose($this->file);
-            if($this->image){return 'Data Save Successfully';}
+            if ($this->image) {
+                return 'Data Save Successfully';
+            }
         }
         return null;
     }
-
-
-    protected function imageUpload(){
+    protected function imageUpload()
+    {
         $this->imageName = $_FILES['image']['name'];
-        if($this->imageName){
-            $this->directory = 'assets/img/upload/'.$this->imageName;
-            move_uploaded_file($_FILES['image']['tmp_name'],$this->directory);
+        if ($this->imageName) {
+            $this->directory = 'assets/img/upload/' . $this->imageName;
+            move_uploaded_file($_FILES['image']['tmp_name'], $this->directory);
             return $this->directory;
         }
         return false;
 
     }
-
-    public function getAllData(){
+    public function getAllData()
+    {
         $this->fileName = 'db.txt';
-        if(@file_get_contents($this->fileName)) {
+        if (@file_get_contents($this->fileName)) {
             $this->data = file_get_contents($this->fileName);
             if (!$this->data) {
                 echo 'error';
@@ -77,47 +90,110 @@ class DataEntry
                 $this->array1 = explode(',', $value);
                 if ($this->array1[0]) {
                     $this->array2[$key]['id'] = $this->array1[0];
-                    $this->array2[$key]['title'] = $this->array1[1];
-                    $this->array2[$key]['author'] = $this->array1[2];
-                    $this->array2[$key]['description'] = $this->array1[3];
-                    $this->array2[$key]['image'] = $this->array1[4];
+                    $this->array2[$key]['code'] = $this->array1[1];
+                    $this->array2[$key]['name'] = $this->array1[2];
+                    $this->array2[$key]['price'] = $this->array1[3];
+                    $this->array2[$key]['quantity'] = $this->array1[4];
+                    $this->array2[$key]['image'] = $this->array1[5];
                 }
             }
             return $this->array2;
-        }
-        else{
+        } else {
             return [];
         }
 
     }
-    protected function getId(){
+
+    public function getAllFilterData($key=null){
+        if($key){
+            return array_filter($this->getAllData(),function($element)use($key){
+                if($element['code'] == $key){return $element;}
+        });
+        }
+        return  $this->getAllData();
+
+    }
+
+    protected function getId()
+    {
         $this->idFileName = 'id.txt';
-        $this->IdData = (@file_get_contents($this->idFileName))? (@file_get_contents($this->idFileName)):0;
+        $this->IdData = (@file_get_contents($this->idFileName)) ? (@file_get_contents($this->idFileName)) : 0;
         $this->IdData += 1;
-        $this->idFile=fopen('id.txt','w');
-        fwrite($this->idFile,$this->IdData);
+        $this->idFile = fopen('id.txt', 'w');
+        fwrite($this->idFile, $this->IdData);
         fclose($this->idFile);
         return $this->IdData;
     }
-    public function update($key=null){
-
-    }
-    public function delete($key=null)
+    public function getupdateInfo($key = null)
     {
-
+        $key .= ',';
         $this->fileName = 'db.txt';
         $this->content = file_get_contents($this->fileName);
-        $this->arrayData = explode($this->content,'$');
-
-        foreach ($this->arrayData  as $dt){
-            if( str_contains($dt,$key) ){
-                break;
+        if (str_contains($this->content, $key)) {
+            $this->strArray = explode($key, $this->content);
+            foreach ($this->strArray as $data) {
+                if ($this->i == 1) {
+                    $this->first = $data;
+                    $this->i++;
+                } else {
+                    $this->second = $data;
+                    $this->showEditData = $key . $data;
+                    $this->showEditData = explode(',', $this->showEditData);
+                    $this->array2['id'] = $this->showEditData[0];
+                    $this->array2['code'] = $this->showEditData[1];
+                    $this->array2['name'] = $this->showEditData[2];
+                    $this->array2['price'] = $this->showEditData[3];
+                    $this->array2['quantity'] = $this->showEditData[4];
+                    $this->array2['image'] = substr($this->showEditData[5], 0, strpos($this->showEditData[5],'$'));
+                    $this->rest = substr($this->second, strpos($this->second, '$') + 1);
+                    return ["data"=>$this->array2,
+                        "trimData"=>$this->first.$this->rest];
+                }
             }
-            $this->finalText .= $dt."$";
         }
-        $this->file=fopen($this->fileName,'w');
-        fwrite($this->file,$this->finalText);
+
+    }
+    public function delete($key = null)
+    {
+        $key .= ',';
+        $this->fileName = 'db.txt';
+        $this->content = file_get_contents($this->fileName);
+        $this->strArray = explode($key, $this->content);
+        foreach ($this->strArray as $data) {
+            if ($this->i == 1) {
+                $this->first = $data;
+                $this->i++;
+            } else {
+                $this->second = $data;
+                $this->rest = substr($this->second, strpos($this->second, '$') + 1);
+            }
+        }
+        $this->finalText = $this->first . $this->rest;
+        $this->file = fopen($this->fileName, 'w');
+        fwrite($this->file, $this->finalText);
         fclose($this->file);
+    }
+    public function update($post=null){
+        if ($post) {
+            $this->id = $post['id'];
+            $this->givenImage = $post['given_image'];
+            $this->trimData =$post['trim_data'];
+            $this->code = $post['code'];
+            $this->productName = $post['name'];
+            $this->price = $post['price'];
+            $this->quantity = $post['quantity'];
+
+            if($this->id && $this->code && $this->productName && $this->price && $this->quantity && $this->givenImage){
+                $this->image = ($this->imageUpload())?$this->imageUpload():$this->givenImage;
+                $this->fileName = 'db.txt';
+                $this->data = "$this->id,$this->code,$this->productName,$this->price,$this->quantity,$this->image$";
+                $this->finalText = $this->data . $this->trimData;
+                $this->file = fopen($this->fileName, 'w');
+                fwrite($this->file, $this->finalText);
+                fclose($this->file);
+            }
+        }
+
     }
 
 

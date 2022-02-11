@@ -10,8 +10,8 @@
                     <h5 class="text-center"><?php echo $_SESSION['name']?></h5>
                     <hr />
                     <a class="dropdown-item" href="action.php?pages=dashboard">Dashboard</a>
-                    <a class="dropdown-item" href="action.php?pages=data-entry">Data Entry</a>
-                    <a class="dropdown-item" href="action.php?pages=all-data">All Data</a>
+                    <a class="dropdown-item" href="action.php?pages=data-entry">Product Entry</a>
+                    <a class="dropdown-item" href="action.php?pages=all-data">All Product</a>
                     <a class="dropdown-item" href="action.php?pages=task">App</a>
                     <a class="dropdown-item" href="action.php?pages=signout">Log Out</a>
                 </div>
