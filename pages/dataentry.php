@@ -7,7 +7,7 @@
                 <div class="col-md-8 mx-auto">
                     <div class="card">
                         <div class="card-header">
-                            <h1 class="text-center">Product Entry</h1>
+                            <h1 class="text-center">Add Product</h1>
                         </div>
                         <div class="card-body">
                             <?php if(isset($msg)){ ?>

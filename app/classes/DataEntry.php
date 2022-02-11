@@ -37,6 +37,10 @@ class DataEntry
     protected $trimData;
     protected $givenImage;
     protected $filterData;
+    protected $dateTime;
+    protected $email;
+    protected $addedBy;
+    protected $addedAt;
 
 
     public function __construct($post = null)
@@ -52,12 +56,14 @@ class DataEntry
     public function index()
     {
         if ($this->code && $this->productName && $this->quantity && $this->price) {
+            date_default_timezone_set('Asia/Dhaka');
+            $this->dateTime = date("l jS \of F Y h:i:s A");
             $this->image = $this->imageUpload();
             $this->fileName = 'db.txt';
             $this->file = fopen($this->fileName, 'a');
-
+            $this->email = $_SESSION["email"];
             $this->id = $this->getId();
-            $this->data = "@$this->id@,$this->code,$this->productName,$this->price,$this->quantity,$this->image$";
+            $this->data = "@$this->id@,$this->code,$this->productName,$this->price,$this->quantity,$this->image,$this->email,$this->email,$this->dateTime,$this->dateTime$";
             fwrite($this->file, $this->data);
             fclose($this->file);
             if ($this->image) {
@@ -95,6 +101,10 @@ class DataEntry
                     $this->array2[$key]['price'] = $this->array1[3];
                     $this->array2[$key]['quantity'] = $this->array1[4];
                     $this->array2[$key]['image'] = $this->array1[5];
+                    $this->array2[$key]['addedBy'] = $this->array1[6];
+                    $this->array2[$key]['modifiedBy'] = $this->array1[7];
+                    $this->array2[$key]['addedAt'] = $this->array1[8];
+                    $this->array2[$key]['modifiedAt'] = $this->array1[9];
                 }
             }
             return $this->array2;
@@ -144,7 +154,11 @@ class DataEntry
                     $this->array2['name'] = $this->showEditData[2];
                     $this->array2['price'] = $this->showEditData[3];
                     $this->array2['quantity'] = $this->showEditData[4];
-                    $this->array2['image'] = substr($this->showEditData[5], 0, strpos($this->showEditData[5],'$'));
+                    $this->array2['image'] = $this->showEditData[5];
+                    $this->array2['addedBy'] = $this->showEditData[6];
+                    $this->array2['modifiedBy'] = $this->showEditData[7];
+                    $this->array2['addedAt'] = $this->showEditData[8];
+                    $this->array2['modifiedAt'] = substr($this->showEditData[9], 0, strpos($this->showEditData[9],'$'));
                     $this->rest = substr($this->second, strpos($this->second, '$') + 1);
                     return ["data"=>$this->array2,
                         "trimData"=>$this->first.$this->rest];
@@ -182,11 +196,17 @@ class DataEntry
             $this->productName = $post['name'];
             $this->price = $post['price'];
             $this->quantity = $post['quantity'];
+            $this->addedBy = $post['added_by'];
+            $this->addedAt = $post['added_at'];
+            date_default_timezone_set('Asia/Dhaka');
+            $this->dateTime = date("l jS \of F Y h:i:s A");
+            $this->email = $_SESSION["email"];
 
-            if($this->id && $this->code && $this->productName && $this->price && $this->quantity && $this->givenImage){
+            if($this->id && $this->code && $this->productName && $this->price && $this->quantity && $this->givenImage && $this->addedBy && $this->addedAt){
                 $this->image = ($this->imageUpload())?$this->imageUpload():$this->givenImage;
+                $this->email = $_SESSION["email"];
                 $this->fileName = 'db.txt';
-                $this->data = "$this->id,$this->code,$this->productName,$this->price,$this->quantity,$this->image$";
+                $this->data = "$this->id,$this->code,$this->productName,$this->price,$this->quantity,$this->image,$this->addedBy,$this->email,$this->addedAt,$this->dateTime$";
                 $this->finalText = $this->data . $this->trimData;
                 $this->file = fopen($this->fileName, 'w');
                 fwrite($this->file, $this->finalText);

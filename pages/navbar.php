@@ -12,6 +12,7 @@
                     <a class="dropdown-item" href="action.php?pages=dashboard">Dashboard</a>
                     <a class="dropdown-item" href="action.php?pages=data-entry">Product Entry</a>
                     <a class="dropdown-item" href="action.php?pages=all-data">All Product</a>
+                    <a class="dropdown-item" href="action.php?pages=logs">Logs</a>
                     <a class="dropdown-item" href="action.php?pages=task">App</a>
                     <a class="dropdown-item" href="action.php?pages=signout">Log Out</a>
                 </div>

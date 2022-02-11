@@ -33,6 +33,7 @@ class Authentication
                    }
 
                    $_SESSION["name"] = strrev($this->name);
+                   $_SESSION["email"] = $this->email;
                    header('location: action.php?pages=dashboard');
                 }
             }

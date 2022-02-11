@@ -14,6 +14,10 @@ include ("navbar.php"); ?>
                                 <input type="hidden" class="form-control" name="trim_data" value="<?php echo isset($trimData)? $trimData:''?>"/>
                                 <input type="hidden" class="form-control" name="given_image" value="<?php echo isset($data['image'])? $data['image']:''?>"/>
                                 <input type="hidden" class="form-control" name="id" value="<?php echo isset($data['id'])? $data['id']:''?>"/>
+                                <input type="hidden" class="form-control" name="added_by" value="<?php echo isset($data['addedBy'])? $data['addedBy']:''?>"/>
+                                <input type="hidden" class="form-control" name="modified_by" value="<?php echo isset($data['modifiedBy'])? $data['modifiedBy']:''?>"/>
+                                <input type="hidden" class="form-control" name="added_at" value="<?php echo isset($data['addedAt'])? $data['addedAt']:''?>"/>
+                                <input type="hidden" class="form-control" name="modified_at" value="<?php echo isset($data['modifiedAt'])? $data['modifiedAt']:''?>"/>
                                 <div class="form-group row">
                                     <label for="" class="col-md-3 col-form-label" >Product Code</label>
                                     <div class="col-md-9">

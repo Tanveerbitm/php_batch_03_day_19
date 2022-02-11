@@ -70,6 +70,14 @@ if (isset($_GET['pages'])) {
         } else {
             include 'pages/login.php';
         }
+    } elseif ($_GET['pages'] == 'logs') {
+        if ($permission) {
+            $dataObj = new DataEntry();
+            $allData = $dataObj->getAllData();
+            include 'pages/logs.php';
+        } else {
+            include 'pages/login.php';
+        }
     } else {
         if ($permission) {
             include 'pages/dashboard.php';
@@ -102,7 +110,7 @@ if (isset($_GET['pages'])) {
     $dataObj->update($_POST);
     $allData = $dataObj->getAllData();
     include 'pages/alldata.php';
-}elseif (isset($_POST['search_btn'])) {
+} elseif (isset($_POST['search_btn'])) {
     $dataObj = new DataEntry();
     $allData = $dataObj->getAllFilterData($_POST['search']);
     include 'pages/alldata.php';

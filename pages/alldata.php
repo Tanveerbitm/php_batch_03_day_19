@@ -5,7 +5,7 @@
 <section class="py-5 bg-light">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 mx-auto">
+            <div class="col-md-10 mx-auto">
                 <div class="card">
                     <form action="action.php" method="POST">
                         <div class="input-group mb-2">
@@ -18,9 +18,13 @@
                         </div>
                     </form>
                     <hr/>
-                    <div class="card-header"><h3>All Product List</h3></div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6"><h3 class="pl-3">All Product List</h3></div>
+                            <div class="col-md-6"><a href="action.php?pages=logs" class="float-right btn btn-dark mr-3">See All Logs</a></div>
+                        </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered table-hover no-gutters">
                             <thead>
                             <tr>
                                 <th>Code</th>
