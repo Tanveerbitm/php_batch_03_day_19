@@ -54,7 +54,7 @@
                                                     <a href="action.php?pages=update&id=<?php echo isset($data['id'])?$data['id']:'' ?>"><i class="fa-solid fa-pen-to-square btn btn-success"></i></a>
                                                 </div>
                                                 <div class="col-6">
-                                                    <a href="action.php?pages=all-data&status=delete&id=<?php echo isset($data['id'])?$data['id']:'' ?>"><i class="fa-solid fa-trash-can btn btn-danger"></i></a>
+                                                    <a href="action.php?pages=all-data&status=delete&id=<?php echo isset($data['id'])?$data['id']:'' ?>&img=<?php echo $data['image'];?>"><i class="fa-solid fa-trash-can btn btn-danger"></i></a>
                                                 </div>
                                             </div>
                                         </td>

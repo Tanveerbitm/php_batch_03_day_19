@@ -45,7 +45,7 @@ if (isset($_GET['pages'])) {
             $dataObj = new DataEntry();
             if (isset($_GET['status'])) {
                 if ($_GET['status'] == 'delete') {
-                    $dataObj->delete($_GET['id']);
+                    $dataObj->delete($_GET);
                 }
             }
             $dataObj = new DataEntry();

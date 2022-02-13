@@ -41,6 +41,7 @@ class DataEntry
     protected $email;
     protected $addedBy;
     protected $addedAt;
+    protected $key;
 
 
     public function __construct($post = null)
@@ -167,12 +168,13 @@ class DataEntry
         }
 
     }
-    public function delete($key = null)
+    public function delete($get = null)
     {
-        $key .= ',';
+        $this->key = $get['id'].',';
+        unlink($get['img']);
         $this->fileName = 'db.txt';
         $this->content = file_get_contents($this->fileName);
-        $this->strArray = explode($key, $this->content);
+        $this->strArray = explode($this->key, $this->content);
         foreach ($this->strArray as $data) {
             if ($this->i == 1) {
                 $this->first = $data;
@@ -187,6 +189,7 @@ class DataEntry
         fwrite($this->file, $this->finalText);
         fclose($this->file);
     }
+
     public function update($post=null){
         if ($post) {
             $this->id = $post['id'];
@@ -201,9 +204,17 @@ class DataEntry
             date_default_timezone_set('Asia/Dhaka');
             $this->dateTime = date("l jS \of F Y h:i:s A");
             $this->email = $_SESSION["email"];
-
             if($this->id && $this->code && $this->productName && $this->price && $this->quantity && $this->givenImage && $this->addedBy && $this->addedAt){
-                $this->image = ($this->imageUpload())?$this->imageUpload():$this->givenImage;
+
+                if($this->imageUpload()){
+                    if($this->givenImage != $this->imageUpload()){
+                        unlink($this->givenImage);
+                    }
+                    $this->image = $this->imageUpload();
+                }else{
+                    $this->image = $this->givenImage;
+                }
+
                 $this->email = $_SESSION["email"];
                 $this->fileName = 'db.txt';
                 $this->data = "$this->id,$this->code,$this->productName,$this->price,$this->quantity,$this->image,$this->addedBy,$this->email,$this->addedAt,$this->dateTime$";
@@ -211,6 +222,7 @@ class DataEntry
                 $this->file = fopen($this->fileName, 'w');
                 fwrite($this->file, $this->finalText);
                 fclose($this->file);
+
             }
         }
 

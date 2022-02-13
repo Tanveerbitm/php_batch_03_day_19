@@ -1,6 +1,5 @@
 <?php include ("header.php");
 include ("navbar.php"); ?>
-
     <section class="py-5 bg-light">
         <div class="container">
             <div class="row">
@@ -47,13 +46,13 @@ include ("navbar.php"); ?>
                                 <div class="form-group row">
                                     <label for="" class="col-md-3 col-form-label" >Image</label>
                                     <div class="col-md-9">
-                                        <img src="<?php echo isset($data['image'])? $data['image']:''?>" alt="Image" height="80" width="100"/>
+                                        <img id="catch" src="<?php echo isset($data['image'])? $data['image']:''?>" alt="Image" height="80" width="100"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="" class="col-md-3 col-form-label" >Upload Image </label>
                                     <div class="col-md-9">
-                                        <input type="file" class="form-control-file" name="image"/>
+                                        <input type="file" class="form-control-file" name="image" onchange="readURL(this);"/>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -76,5 +75,18 @@ include ("navbar.php"); ?>
             </div>
         </div>
     </section>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
+                reader.onload = function (e) {
+                    $('#catch')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 <?php include ("footer.php")?>
